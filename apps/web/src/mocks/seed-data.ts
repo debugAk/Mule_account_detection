@@ -1,4 +1,21 @@
 import { Alert, Case, FraudRing, RiskTier } from '@mule-platform/shared-types';
+import trainedAccountsRaw from './trained-accounts.json';
+
+interface TrainedAccount {
+  file: string;
+  raw_account_no: string;
+  holder_name: string;
+  ifsc: string;
+  tx_count: number;
+  total_credit_inr: number;
+  total_debit_inr: number;
+  pass_through_ratio: number;
+  unique_counterparties: number;
+  signals: [string, string, string];
+  mule_risk_score: number;
+}
+
+const trainedAccounts = trainedAccountsRaw as unknown as TrainedAccount[];
 
 const BANKS = [
   { code: 'HDFC', name: 'HDFC Bank', ifscPrefix: 'HDFC000' },
@@ -6,53 +23,6 @@ const BANKS = [
   { code: 'ICIC', name: 'ICICI Bank', ifscPrefix: 'ICIC000' },
   { code: 'AXIS', name: 'Axis Bank', ifscPrefix: 'UTIB000' },
   { code: 'KKBK', name: 'Kotak Mahindra Bank', ifscPrefix: 'KKBK000' },
-  { code: 'PUNB', name: 'Punjab National Bank', ifscPrefix: 'PUNB000' },
-];
-
-const UPI_PROVIDERS = ['okaxis', 'okhdfcbank', 'oksbi', 'paytm', 'ybl', 'ibl'];
-
-const FIRST_NAMES = [
-  'Aarav', 'Ravi', 'Priya', 'Amit', 'Vikram', 'Suresh', 'Deepak', 'Ananya',
-  'Sunil', 'Rajesh', 'Pooja', 'Manoj', 'Kavita', 'Neha', 'Gaurav', 'Arjun',
-  'Sneha', 'Mohit', 'Pankaj', 'Karan', 'Rahul', 'Vivek', 'Manish', 'Sanjay'
-];
-
-const LAST_NAMES = [
-  'Kumar', 'Sharma', 'Patel', 'Singh', 'Nair', 'Verma', 'Gupta', 'Joshi',
-  'Reddy', 'Mehta', 'Choudhury', 'Yadav', 'Mishra', 'Bose', 'Das', 'Pandey'
-];
-
-const SIGNAL_TEMPLATES: [string, string, string][] = [
-  [
-    '94% fund outflow within 14 mins of IMPS/UPI credit',
-    'Shared device fingerprint across 9 dormant student accounts',
-    'Rapid velocity spike: 28 credits followed by immediate ATM cash-out'
-  ],
-  [
-    'Immediate pass-through ratio of 0.98 to unverified mule node',
-    'New account opened < 18 days ago with sudden ₹4.8L turnover',
-    'Geographic anomaly: login IP in Jamtara, branch in Pune'
-  ],
-  [
-    'Multiple inward UPI tranches matching telegram phishing modus',
-    'Beneficiary bank accounts flagged in NCRB cybercrime registry',
-    'Dormant account activated after 11 months with zero KYC refresh'
-  ],
-  [
-    'Circular fund routing detected across 4 intermediary bank accounts',
-    'Account holder declared income < ₹1.5L/yr; ₹12.4L turnover in 48h',
-    'Same IMEISV device token linked to previously frozen syndicate'
-  ],
-  [
-    'Layering pattern: 16 inward IMPS deposits split into 4 equal RTGS transfers',
-    'Sim swap detected 36 hours prior to high-volume transaction flurry',
-    'Account operated strictly between 01:00 IST and 04:30 IST'
-  ],
-  [
-    'Pass-through ratio 0.96 within 6 minutes of NEFT credit',
-    'Device hash shared with known cyber fraud ring in Bharatpur cluster',
-    'PAN card linked to 14 different saving accounts across 5 states'
-  ]
 ];
 
 export const FRAUD_RINGS: FraudRing[] = [
@@ -92,72 +62,71 @@ export function generateSeedAlerts(count = 450): Alert[] {
   const alerts: Alert[] = [];
   const now = Date.now();
 
-  for (let i = 1; i <= count; i++) {
+  // 1. Add trained SOA accounts first
+  trainedAccounts.forEach((t, idx) => {
+    const bank = BANKS[idx % BANKS.length];
+    const last4 = t.raw_account_no.slice(-4).padStart(4, '0');
+    const nameParts = t.holder_name.split(' ');
+    const first = nameParts[0] || 'Unknown';
+    const last = nameParts[1] || '';
+    const maskedName = `${first.charAt(0)}*** ${last ? last.charAt(0) + '***' : ''}`.trim();
+    const riskScore = t.mule_risk_score;
+    const tier: RiskTier = riskScore >= 85 ? 'CRITICAL' : riskScore >= 70 ? 'HIGH' : riskScore >= 50 ? 'MEDIUM' : 'LOW';
+
+    alerts.push({
+      id: `ALT-SOA-${8000 + idx}`,
+      accountId: `${bank.code}-XXXX${last4}`,
+      accountHolderMasked: maskedName,
+      bankName: bank.name,
+      ifsc: t.ifsc || `${bank.ifscPrefix}${1000 + idx}`,
+      upiHandleMasked: `${first.toLowerCase()}.${last ? last.charAt(0).toLowerCase() : 'x'}**@${bank.code.toLowerCase()}`,
+      riskScore,
+      riskTier: tier,
+      passThroughRatio: t.pass_through_ratio,
+      graphDegree: Math.min(250, Math.max(5, Math.round(Math.log2(t.unique_counterparties + 1) * 8))),
+      accountAgeDays: Math.max(7, (idx * 17) % 360),
+      amountAtRiskINR: Math.round(t.total_credit_inr),
+      timestamp: new Date(now - (idx * 24 + 12) * 60 * 1000).toISOString(),
+      ringId: idx % 4 === 0 ? FRAUD_RINGS[idx % FRAUD_RINGS.length].id : undefined,
+      status: idx % 7 === 0 ? 'INVESTIGATING' : 'NEW',
+      queueCategory: idx % 3 === 0 ? 'HIGH_RISK' : 'MY_QUEUE',
+      signals: t.signals,
+      assignedTo: idx % 2 === 0 ? 'ANALYST-104 (Current Session)' : undefined,
+      isRestricted: idx === 3 || idx === 11,
+    });
+  });
+
+  // 2. Synthesize remainder to reach 450 items
+  for (let i = alerts.length + 1; i <= count; i++) {
     const bank = BANKS[i % BANKS.length];
-    const first = FIRST_NAMES[i % FIRST_NAMES.length];
-    const last = LAST_NAMES[(i * 3) % LAST_NAMES.length];
-    const upiProvider = UPI_PROVIDERS[i % UPI_PROVIDERS.length];
-    const fourDigit = String(1000 + ((i * 37) % 9000));
-    const ifscNum = String(1000 + ((i * 19) % 8999));
-
-    // Risk score distribution: skewed towards high and critical for realistic queue
-    let riskScore: number;
-    let riskTier: RiskTier;
-
-    if (i % 5 === 0) {
-      riskScore = 88 + (i % 12);
-      riskTier = 'CRITICAL';
-    } else if (i % 3 === 0) {
-      riskScore = 72 + (i % 16);
-      riskTier = 'HIGH';
-    } else if (i % 2 === 0) {
-      riskScore = 52 + (i % 19);
-      riskTier = 'MEDIUM';
-    } else {
-      riskScore = 28 + (i % 24);
-      riskTier = 'LOW';
-    }
-
-    const passThroughRatio = Number((0.72 + (Math.sin(i) * 0.12 + 0.14)).toFixed(2));
-    const graphDegree = 3 + ((i * 7) % 29);
-    const accountAgeDays = Math.max(3, (i * 13) % 420);
-    const amountAtRiskINR = Math.round((45000 + ((i * 23157) % 1850000)) / 100) * 100;
-    
-    // Recent timestamps within last 48 hours in IST
-    const minutesAgo = i * 6 + ((i * 17) % 15);
-    const timestamp = new Date(now - minutesAgo * 60 * 1000).toISOString();
-
-    const ring = i % 7 === 0 ? FRAUD_RINGS[i % FRAUD_RINGS.length] : undefined;
-
-    let queueCategory: 'MY_QUEUE' | 'HIGH_RISK' | 'RINGS' | 'NEW_TODAY' = 'MY_QUEUE';
-    if (ring) {
-      queueCategory = 'RINGS';
-    } else if (riskTier === 'CRITICAL' || riskScore >= 75) {
-      queueCategory = 'HIGH_RISK';
-    } else if (minutesAgo < 1440) {
-      queueCategory = 'NEW_TODAY';
-    }
+    const last4 = String(1000 + ((i * 37) % 9000));
+    const riskScore = i % 5 === 0 ? 88 + (i % 12) : i % 3 === 0 ? 72 + (i % 16) : 38 + (i % 25);
+    const tier: RiskTier = riskScore >= 80 ? 'CRITICAL' : riskScore >= 65 ? 'HIGH' : 'MEDIUM';
 
     alerts.push({
       id: `ALT-${80000 + i}`,
-      accountId: `${bank.code}-XXXX${fourDigit}`,
-      accountHolderMasked: `${first.charAt(0)}${'*'.repeat(first.length - 1)} ${last.charAt(0)}${'*'.repeat(last.length - 1)}`,
+      accountId: `${bank.code}-XXXX${last4}`,
+      accountHolderMasked: `R*** K***`,
       bankName: bank.name,
-      ifsc: `${bank.ifscPrefix}${ifscNum}`,
-      upiHandleMasked: `${first.toLowerCase()}.${last.charAt(0).toLowerCase()}**@${upiProvider}`,
+      ifsc: `${bank.ifscPrefix}${1000 + (i % 8999)}`,
+      upiHandleMasked: `analyst.flag${i % 100}@${bank.code.toLowerCase()}`,
       riskScore,
-      riskTier,
-      passThroughRatio,
-      graphDegree,
-      accountAgeDays,
-      amountAtRiskINR,
-      timestamp,
-      ringId: ring?.id,
-      status: i % 11 === 0 ? 'INVESTIGATING' : 'NEW',
-      queueCategory,
-      signals: SIGNAL_TEMPLATES[i % SIGNAL_TEMPLATES.length],
+      riskTier: tier,
+      passThroughRatio: Number((0.75 + (Math.sin(i) * 0.12 + 0.12)).toFixed(2)),
+      graphDegree: 4 + ((i * 5) % 28),
+      accountAgeDays: Math.max(5, (i * 11) % 400),
+      amountAtRiskINR: Math.round((55000 + ((i * 18450) % 1900000)) / 100) * 100,
+      timestamp: new Date(now - (i * 12 + 5) * 60 * 1000).toISOString(),
+      ringId: i % 8 === 0 ? FRAUD_RINGS[i % FRAUD_RINGS.length].id : undefined,
+      status: 'NEW',
+      queueCategory: riskScore >= 75 ? 'HIGH_RISK' : 'NEW_TODAY',
+      signals: [
+        '96.2% fund pass-through within 18 mins of inward transfer flurry',
+        'Device fingerprint shared with known syndicate proxy node',
+        'Sudden turnover spike: 42 UPI inward deposits followed by immediate IMPS transfer'
+      ],
       assignedTo: i % 4 === 0 ? 'ANALYST-104 (Current Session)' : undefined,
-      isRestricted: i % 31 === 0,
+      isRestricted: i % 30 === 0,
     });
   }
 
@@ -165,30 +134,20 @@ export function generateSeedAlerts(count = 450): Alert[] {
 }
 
 export function generateSeedCases(alerts: Alert[]): Case[] {
-  const cases: Case[] = [];
-  const highRiskAlerts = alerts.filter(a => a.riskScore >= 75).slice(0, 32);
-
-  highRiskAlerts.forEach((alt, idx) => {
-    const hoursRemaining = Math.max(0.8, 12 - (idx * 0.38));
-    const slaDeadline = new Date(Date.now() + hoursRemaining * 3600 * 1000).toISOString();
-
-    cases.push({
-      id: `CAS-2026-${1000 + idx}`,
-      alertId: alt.id,
-      title: `Rapid Mule Layering on ${alt.accountId} (${alt.bankName})`,
-      riskScore: alt.riskScore,
-      primaryAccount: alt.accountId,
-      primaryHolderMasked: alt.accountHolderMasked,
-      bankName: alt.bankName,
-      ifsc: alt.ifsc,
-      slaDeadline,
-      status: idx % 6 === 0 ? 'UNDER_REVIEW' : idx % 9 === 0 ? 'STR_SUBMITTED' : 'OPEN',
-      assignedAnalyst: 'ANALYST-104 (Current Session)',
-      totalExposedINR: alt.amountAtRiskINR,
-      summary: `Automated detection triggered by pass-through velocity ${alt.passThroughRatio} with ${alt.graphDegree} counterparty edges in network. ${alt.signals[0]}.`,
-      createdAt: alt.timestamp,
-    });
-  });
-
-  return cases;
+  return alerts.filter(a => a.riskScore >= 75).slice(0, 32).map((alt, idx) => ({
+    id: `CAS-2026-${1000 + idx}`,
+    alertId: alt.id,
+    title: `Rapid Mule Layering on ${alt.accountId} (${alt.bankName})`,
+    riskScore: alt.riskScore,
+    primaryAccount: alt.accountId,
+    primaryHolderMasked: alt.accountHolderMasked,
+    bankName: alt.bankName,
+    ifsc: alt.ifsc,
+    slaDeadline: new Date(Date.now() + Math.max(0.8, 12 - idx * 0.38) * 3600 * 1000).toISOString(),
+    status: idx % 6 === 0 ? 'UNDER_REVIEW' : idx % 9 === 0 ? 'STR_SUBMITTED' : 'OPEN',
+    assignedAnalyst: 'ANALYST-104 (Current Session)',
+    totalExposedINR: alt.amountAtRiskINR,
+    summary: `Automated detection triggered by pass-through velocity ${alt.passThroughRatio} with ${alt.graphDegree} counterparty edges. ${alt.signals[0]}.`,
+    createdAt: alt.timestamp,
+  }));
 }

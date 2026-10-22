@@ -1,0 +1,502 @@
+[
+  {
+    "file":"11_SOA.xls",
+    "raw_account_no":"50862517185",
+    "holder_name":"Onkar Chad",
+    "ifsc":"HDFC0001245",
+    "tx_count":42,
+    "total_credit_inr":10026964.8900000006,
+    "total_debit_inr":11947193.459999999,
+    "pass_through_ratio":0.8393,
+    "min_balance":0.0,
+    "max_balance":7409319.6600000001,
+    "end_balance":0.0,
+    "unique_counterparties":42,
+    "signals":[
+      "83.9% fund pass-through ratio across 42 recorded transactions",
+      "Rapid turnover: INR 10,026,965 credit vs INR 11,947,193 debit with near-zero retention",
+      "Dense counterparty dispersion across 42 unique transaction narratives"
+    ],
+    "mule_risk_score":95
+  },
+  {
+    "file":"12_SOA.xlsx",
+    "raw_account_no":"478803729416",
+    "holder_name":"Udarsh Khalsa",
+    "ifsc":"HDFC0001245",
+    "tx_count":60656,
+    "total_credit_inr":165401140.1700000167,
+    "total_debit_inr":166994085.3500000238,
+    "pass_through_ratio":0.9905,
+    "min_balance":0.0,
+    "max_balance":6297389.9500000002,
+    "end_balance":0.0,
+    "unique_counterparties":60656,
+    "signals":[
+      "99.1% fund pass-through ratio across 60,656 recorded transactions",
+      "Rapid turnover: INR 165,401,140 credit vs INR 166,994,085 debit with near-zero retention",
+      "Dense counterparty dispersion across 60,656 unique transaction narratives"
+    ],
+    "mule_risk_score":89
+  },
+  {
+    "file":"14_SOA.xlsx",
+    "raw_account_no":"290848099097",
+    "holder_name":"Tanish Mukherjee",
+    "ifsc":"106",
+    "tx_count":16836,
+    "total_credit_inr":398950859.2199999094,
+    "total_debit_inr":407386713.8499999642,
+    "pass_through_ratio":0.9793,
+    "min_balance":0.0,
+    "max_balance":65774107.2800000012,
+    "end_balance":0.0,
+    "unique_counterparties":16832,
+    "signals":[
+      "97.9% fund pass-through ratio across 16,836 recorded transactions",
+      "Rapid turnover: INR 398,950,859 credit vs INR 407,386,714 debit with near-zero retention",
+      "Dense counterparty dispersion across 16,832 unique transaction narratives"
+    ],
+    "mule_risk_score":90
+  },
+  {
+    "file":"15_SOA.xlsx",
+    "raw_account_no":"157922378931",
+    "holder_name":"Girik Mannan",
+    "ifsc":"4015",
+    "tx_count":1569,
+    "total_credit_inr":123897483.549999997,
+    "total_debit_inr":126732621.2599999905,
+    "pass_through_ratio":0.9776,
+    "min_balance":0.0,
+    "max_balance":31253905.3599999994,
+    "end_balance":0.0,
+    "unique_counterparties":1567,
+    "signals":[
+      "97.8% fund pass-through ratio across 1,569 recorded transactions",
+      "Rapid turnover: INR 123,897,484 credit vs INR 126,732,621 debit with near-zero retention",
+      "Dense counterparty dispersion across 1,567 unique transaction narratives"
+    ],
+    "mule_risk_score":91
+  },
+  {
+    "file":"16_SOA.xlsx",
+    "raw_account_no":"812628184553",
+    "holder_name":"Eesha Dayal",
+    "ifsc":"4015",
+    "tx_count":2267,
+    "total_credit_inr":138242001.0699999928,
+    "total_debit_inr":143231120.8899999857,
+    "pass_through_ratio":0.9652,
+    "min_balance":0.0,
+    "max_balance":36486347.9699999988,
+    "end_balance":0.0,
+    "unique_counterparties":2262,
+    "signals":[
+      "96.5% fund pass-through ratio across 2,267 recorded transactions",
+      "Rapid turnover: INR 138,242,001 credit vs INR 143,231,121 debit with near-zero retention",
+      "Dense counterparty dispersion across 2,262 unique transaction narratives"
+    ],
+    "mule_risk_score":92
+  },
+  {
+    "file":"17_SOA.xls",
+    "raw_account_no":"84675299705",
+    "holder_name":"Abdul Hans",
+    "ifsc":"HDFC0001245",
+    "tx_count":2472,
+    "total_credit_inr":27621573.0,
+    "total_debit_inr":27809655.5,
+    "pass_through_ratio":0.9932,
+    "min_balance":0.0,
+    "max_balance":6145190.5999999996,
+    "end_balance":0.0,
+    "unique_counterparties":2472,
+    "signals":[
+      "99.3% fund pass-through ratio across 2,472 recorded transactions",
+      "Rapid turnover: INR 27,621,573 credit vs INR 27,809,656 debit with near-zero retention",
+      "Dense counterparty dispersion across 2,472 unique transaction narratives"
+    ],
+    "mule_risk_score":93
+  },
+  {
+    "file":"18_SOA.xls",
+    "raw_account_no":"54717799199",
+    "holder_name":"Ayaan Rastogi",
+    "ifsc":"HDFC0001245",
+    "tx_count":10373,
+    "total_credit_inr":212439533.1200000048,
+    "total_debit_inr":208435169.9799999893,
+    "pass_through_ratio":0.9812,
+    "min_balance":0.0,
+    "max_balance":33809332.6700000018,
+    "end_balance":0.0,
+    "unique_counterparties":10373,
+    "signals":[
+      "98.1% fund pass-through ratio across 10,373 recorded transactions",
+      "Rapid turnover: INR 212,439,533 credit vs INR 208,435,170 debit with near-zero retention",
+      "Dense counterparty dispersion across 10,373 unique transaction narratives"
+    ],
+    "mule_risk_score":94
+  },
+  {
+    "file":"19_SOA.xls",
+    "raw_account_no":"41876928027",
+    "holder_name":"Anay Wadhwa",
+    "ifsc":"HDFC0001245",
+    "tx_count":1676,
+    "total_credit_inr":50449661.3800000027,
+    "total_debit_inr":50313047.6000000015,
+    "pass_through_ratio":0.9973,
+    "min_balance":0.0,
+    "max_balance":4577414.6699999999,
+    "end_balance":0.0,
+    "unique_counterparties":1676,
+    "signals":[
+      "99.7% fund pass-through ratio across 1,676 recorded transactions",
+      "Rapid turnover: INR 50,449,661 credit vs INR 50,313,048 debit with near-zero retention",
+      "Dense counterparty dispersion across 1,676 unique transaction narratives"
+    ],
+    "mule_risk_score":95
+  },
+  {
+    "file":"1_SOA.xlsx",
+    "raw_account_no":"71970653347031",
+    "holder_name":"Michael Mammen",
+    "ifsc":"HDFC0001245",
+    "tx_count":128,
+    "total_credit_inr":67741587.6800000072,
+    "total_debit_inr":75475913.4099999964,
+    "pass_through_ratio":0.8975,
+    "min_balance":0.0,
+    "max_balance":30146229.7399999984,
+    "end_balance":0.0,
+    "unique_counterparties":128,
+    "signals":[
+      "89.8% fund pass-through ratio across 128 recorded transactions",
+      "Rapid turnover: INR 67,741,588 credit vs INR 75,475,913 debit with near-zero retention",
+      "Dense counterparty dispersion across 128 unique transaction narratives"
+    ],
+    "mule_risk_score":82
+  },
+  {
+    "file":"20_SOA.xls",
+    "raw_account_no":"22078215819",
+    "holder_name":"Chakradev Sarna",
+    "ifsc":"HDFC0001245",
+    "tx_count":25,
+    "total_credit_inr":2085853.3300000001,
+    "total_debit_inr":2442674.8799999999,
+    "pass_through_ratio":0.8539,
+    "min_balance":0.0,
+    "max_balance":1188041.9099999999,
+    "end_balance":0.0,
+    "unique_counterparties":25,
+    "signals":[
+      "85.4% fund pass-through ratio across 25 recorded transactions",
+      "Rapid turnover: INR 2,085,853 credit vs INR 2,442,675 debit with near-zero retention",
+      "Dense counterparty dispersion across 25 unique transaction narratives"
+    ],
+    "mule_risk_score":98
+  },
+  {
+    "file":"22_SOA.xls",
+    "raw_account_no":"49993430413",
+    "holder_name":"Avi Bobal",
+    "ifsc":"HDFC0001245",
+    "tx_count":4489,
+    "total_credit_inr":47383335.700000003,
+    "total_debit_inr":44576089.0400000066,
+    "pass_through_ratio":0.9408,
+    "min_balance":0.0,
+    "max_balance":6384162.6500000004,
+    "end_balance":0.0,
+    "unique_counterparties":4489,
+    "signals":[
+      "94.1% fund pass-through ratio across 4,489 recorded transactions",
+      "Rapid turnover: INR 47,383,336 credit vs INR 44,576,089 debit with near-zero retention",
+      "Dense counterparty dispersion across 4,489 unique transaction narratives"
+    ],
+    "mule_risk_score":67
+  },
+  {
+    "file":"23_SOA.xls",
+    "raw_account_no":"54261702645",
+    "holder_name":"Charles Bumb",
+    "ifsc":"HDFC0001245",
+    "tx_count":112,
+    "total_credit_inr":24743843.549999997,
+    "total_debit_inr":25870872.3100000024,
+    "pass_through_ratio":0.9564,
+    "min_balance":0.0,
+    "max_balance":14697964.3399999999,
+    "end_balance":0.0,
+    "unique_counterparties":112,
+    "signals":[
+      "95.6% fund pass-through ratio across 112 recorded transactions",
+      "Rapid turnover: INR 24,743,844 credit vs INR 25,870,872 debit with near-zero retention",
+      "Dense counterparty dispersion across 112 unique transaction narratives"
+    ],
+    "mule_risk_score":88
+  },
+  {
+    "file":"24_SOA.xlsx",
+    "raw_account_no":"278027531303",
+    "holder_name":"Falguni Wable",
+    "ifsc":"HDFC0001245",
+    "tx_count":59894,
+    "total_credit_inr":206787932.5500000119,
+    "total_debit_inr":208031100.0400000215,
+    "pass_through_ratio":0.994,
+    "min_balance":0.0,
+    "max_balance":12844025.2300000004,
+    "end_balance":0.0,
+    "unique_counterparties":59894,
+    "signals":[
+      "99.4% fund pass-through ratio across 59,894 recorded transactions",
+      "Rapid turnover: INR 206,787,933 credit vs INR 208,031,100 debit with near-zero retention",
+      "Dense counterparty dispersion across 59,894 unique transaction narratives"
+    ],
+    "mule_risk_score":89
+  },
+  {
+    "file":"25_SOA.xlsx",
+    "raw_account_no":"179284454225",
+    "holder_name":"Nimrat Dara",
+    "ifsc":"2382",
+    "tx_count":1172,
+    "total_credit_inr":173072036.8000000119,
+    "total_debit_inr":175008918.5699999928,
+    "pass_through_ratio":0.9889,
+    "min_balance":0.0,
+    "max_balance":25874282.2300000004,
+    "end_balance":0.0,
+    "unique_counterparties":1171,
+    "signals":[
+      "98.9% fund pass-through ratio across 1,172 recorded transactions",
+      "Rapid turnover: INR 173,072,037 credit vs INR 175,008,919 debit with near-zero retention",
+      "Dense counterparty dispersion across 1,171 unique transaction narratives"
+    ],
+    "mule_risk_score":90
+  },
+  {
+    "file":"26_SOA.xlsx",
+    "raw_account_no":"517718469910",
+    "holder_name":"Tanish Mukherjee",
+    "ifsc":"HDFC0001245",
+    "tx_count":56497,
+    "total_credit_inr":285301114.8600000143,
+    "total_debit_inr":282104941.6600000262,
+    "pass_through_ratio":0.9888,
+    "min_balance":0.0,
+    "max_balance":18602196.8399999999,
+    "end_balance":64678.71,
+    "unique_counterparties":56418,
+    "signals":[
+      "98.9% fund pass-through ratio across 56,497 recorded transactions",
+      "Rapid turnover: INR 285,301,115 credit vs INR 282,104,942 debit with near-zero retention",
+      "Dense counterparty dispersion across 56,418 unique transaction narratives"
+    ],
+    "mule_risk_score":91
+  },
+  {
+    "file":"28_SOA.xlsx",
+    "raw_account_no":"573740499013",
+    "holder_name":"Chaaya Iyer",
+    "ifsc":"HDFC0001245",
+    "tx_count":23892,
+    "total_credit_inr":421462069.280000031,
+    "total_debit_inr":431961566.4900000095,
+    "pass_through_ratio":0.9757,
+    "min_balance":0.0,
+    "max_balance":120090137.549999997,
+    "end_balance":0.0,
+    "unique_counterparties":23867,
+    "signals":[
+      "97.6% fund pass-through ratio across 23,892 recorded transactions",
+      "Rapid turnover: INR 421,462,069 credit vs INR 431,961,566 debit with near-zero retention",
+      "Dense counterparty dispersion across 23,867 unique transaction narratives"
+    ],
+    "mule_risk_score":92
+  },
+  {
+    "file":"2_SOA.xlsx",
+    "raw_account_no":"3434602874",
+    "holder_name":"Kabir Arora",
+    "ifsc":"HDFC0001245",
+    "tx_count":11109,
+    "total_credit_inr":109141678.5300000012,
+    "total_debit_inr":109141678.5300000012,
+    "pass_through_ratio":1.0,
+    "min_balance":0.0,
+    "max_balance":8093512.9900000002,
+    "end_balance":0.0,
+    "unique_counterparties":11046,
+    "signals":[
+      "100.0% fund pass-through ratio across 11,109 recorded transactions",
+      "Rapid turnover: INR 109,141,679 credit vs INR 109,141,679 debit with near-zero retention",
+      "Dense counterparty dispersion across 11,046 unique transaction narratives"
+    ],
+    "mule_risk_score":93
+  },
+  {
+    "file":"3_SOA.xls",
+    "raw_account_no":"7006306880.0",
+    "holder_name":"Rohan kumar sah",
+    "ifsc":"HDFC0001245",
+    "tx_count":12491,
+    "total_credit_inr":86797786.3900000006,
+    "total_debit_inr":86797786.3900000006,
+    "pass_through_ratio":1.0,
+    "min_balance":0.0,
+    "max_balance":14401663.5600000005,
+    "end_balance":0.0,
+    "unique_counterparties":12490,
+    "signals":[
+      "100.0% fund pass-through ratio across 12,491 recorded transactions",
+      "Rapid turnover: INR 86,797,786 credit vs INR 86,797,786 debit with near-zero retention",
+      "Dense counterparty dispersion across 12,490 unique transaction narratives"
+    ],
+    "mule_risk_score":94
+  },
+  {
+    "file":"48_SOA.xlsx",
+    "raw_account_no":"517718469910",
+    "holder_name":"Rachana Dhar",
+    "ifsc":"HDFC0001245",
+    "tx_count":55702,
+    "total_credit_inr":550906630.0499999523,
+    "total_debit_inr":543913859.9299999475,
+    "pass_through_ratio":0.9873,
+    "min_balance":0.0,
+    "max_balance":19658310.4200000018,
+    "end_balance":0.0,
+    "unique_counterparties":55702,
+    "signals":[
+      "98.7% fund pass-through ratio across 55,702 recorded transactions",
+      "Rapid turnover: INR 550,906,630 credit vs INR 543,913,860 debit with near-zero retention",
+      "Dense counterparty dispersion across 55,702 unique transaction narratives"
+    ],
+    "mule_risk_score":95
+  },
+  {
+    "file":"4_SOA.xlsx",
+    "raw_account_no":"7458200654",
+    "holder_name":"Vivaan Shah",
+    "ifsc":"HDFC0001245",
+    "tx_count":6069,
+    "total_credit_inr":42350175.5300000012,
+    "total_debit_inr":42350175.5300000012,
+    "pass_through_ratio":1.0,
+    "min_balance":0.0,
+    "max_balance":0.0,
+    "end_balance":0.0,
+    "unique_counterparties":6036,
+    "signals":[
+      "100.0% fund pass-through ratio across 6,069 recorded transactions",
+      "Rapid turnover: INR 42,350,176 credit vs INR 42,350,176 debit with near-zero retention",
+      "Dense counterparty dispersion across 6,036 unique transaction narratives"
+    ],
+    "mule_risk_score":96
+  },
+  {
+    "file":"5_SOA.xlsx",
+    "raw_account_no":"5504960207",
+    "holder_name":"Aditya Sethi",
+    "ifsc":"HDFC0001245",
+    "tx_count":5059,
+    "total_credit_inr":33271901.7899999954,
+    "total_debit_inr":33271901.7899999954,
+    "pass_through_ratio":1.0,
+    "min_balance":0.0,
+    "max_balance":0.0,
+    "end_balance":0.0,
+    "unique_counterparties":5056,
+    "signals":[
+      "100.0% fund pass-through ratio across 5,059 recorded transactions",
+      "Rapid turnover: INR 33,271,902 credit vs INR 33,271,902 debit with near-zero retention",
+      "Dense counterparty dispersion across 5,056 unique transaction narratives"
+    ],
+    "mule_risk_score":97
+  },
+  {
+    "file":"6_SOA.xlsx",
+    "raw_account_no":"654816510436",
+    "holder_name":"Jack Patil",
+    "ifsc":"ICIC0001335",
+    "tx_count":35155,
+    "total_credit_inr":325731422.5199999809,
+    "total_debit_inr":325795735.2100000381,
+    "pass_through_ratio":0.9998,
+    "min_balance":-98228.5,
+    "max_balance":7850000.0,
+    "end_balance":41432.7,
+    "unique_counterparties":34982,
+    "signals":[
+      "100.0% fund pass-through ratio across 35,155 recorded transactions",
+      "Rapid turnover: INR 325,731,423 credit vs INR 325,795,735 debit with near-zero retention",
+      "Dense counterparty dispersion across 34,982 unique transaction narratives"
+    ],
+    "mule_risk_score":98
+  },
+  {
+    "file":"7_SOA.xlsx",
+    "raw_account_no":"706712176758",
+    "holder_name":"Wakeeta Sheth",
+    "ifsc":"HDFC0001245",
+    "tx_count":29149,
+    "total_credit_inr":246101426.0799999833,
+    "total_debit_inr":246101426.0800000131,
+    "pass_through_ratio":1.0,
+    "min_balance":-346342.21,
+    "max_balance":3698663.6699999999,
+    "end_balance":0.0,
+    "unique_counterparties":28987,
+    "signals":[
+      "100.0% fund pass-through ratio across 29,149 recorded transactions",
+      "Rapid turnover: INR 246,101,426 credit vs INR 246,101,426 debit with near-zero retention",
+      "Dense counterparty dispersion across 28,987 unique transaction narratives"
+    ],
+    "mule_risk_score":88
+  },
+  {
+    "file":"8_SOA.xlsx",
+    "raw_account_no":"692975286269",
+    "holder_name":"Qushi Chaudhary",
+    "ifsc":"HDFC0001245",
+    "tx_count":19895,
+    "total_credit_inr":89860034.0,
+    "total_debit_inr":89860034.0,
+    "pass_through_ratio":1.0,
+    "min_balance":0.0,
+    "max_balance":12335179.5500000007,
+    "end_balance":0.0,
+    "unique_counterparties":19878,
+    "signals":[
+      "100.0% fund pass-through ratio across 19,895 recorded transactions",
+      "Rapid turnover: INR 89,860,034 credit vs INR 89,860,034 debit with near-zero retention",
+      "Dense counterparty dispersion across 19,878 unique transaction narratives"
+    ],
+    "mule_risk_score":89
+  },
+  {
+    "file":"9_SOA.xlsx",
+    "raw_account_no":"766841036560",
+    "holder_name":"Faras Swaminathan",
+    "ifsc":"HDFC0001245",
+    "tx_count":77547,
+    "total_credit_inr":210885635.7099999785,
+    "total_debit_inr":208971071.9800000191,
+    "pass_through_ratio":0.9909,
+    "min_balance":0.0,
+    "max_balance":9307323.6500000004,
+    "end_balance":14125.83,
+    "unique_counterparties":77547,
+    "signals":[
+      "99.1% fund pass-through ratio across 77,547 recorded transactions",
+      "Rapid turnover: INR 210,885,636 credit vs INR 208,971,072 debit with near-zero retention",
+      "Dense counterparty dispersion across 77,547 unique transaction narratives"
+    ],
+    "mule_risk_score":90
+  }
+]
