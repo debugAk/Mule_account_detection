@@ -3,6 +3,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './hooks/useTheme';
 import { Header } from './components/Header';
 import { AlertQueueScreen } from './features/alerts/AlertQueueScreen';
+import { CaseDetailScreen } from './features/cases/CaseDetailScreen';
+import { LinkAnalysisGraphScreen } from './features/graph/LinkAnalysisGraphScreen';
+import { EvidenceAndStrDraftScreen } from './features/str/EvidenceAndStrDraftScreen';
 import { Alert } from '@mule-platform/shared-types';
 import { Layers, FileSpreadsheet, Share2, FileCheck } from 'lucide-react';
 
@@ -24,7 +27,7 @@ export const AppContent: React.FC = () => {
 
   const handleSelectAlert = (alert: Alert) => {
     setSelectedAlert(alert);
-    // When Enter is pressed or row clicked, can inspect or switch
+    setActiveTab('case_detail');
   };
 
   return (
@@ -112,57 +115,15 @@ export const AppContent: React.FC = () => {
         )}
 
         {activeTab === 'case_detail' && (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[var(--surface)]">
-            <h2 className="text-[16px] font-semibold text-[var(--ink)] mb-2">
-              Screen 2: Case Detail Workspace
-            </h2>
-            <p className="text-[13px] text-[var(--ink-muted)] max-w-[540px] mb-4">
-              {selectedAlert
-                ? `Ready to assemble the three-pane split for ${selectedAlert.accountId} (${selectedAlert.bankName}): entity summary (280px), tabbed work area, and collapsible activity/notes (320px).`
-                : 'Select an alert in the queue or press Enter to load case telemetry.'}
-            </p>
-            <button
-              onClick={() => setActiveTab('alerts')}
-              className="text-[12px] font-medium text-[var(--accent)] underline underline-offset-2"
-            >
-              Back to Alert Queue
-            </button>
-          </div>
+          <CaseDetailScreen
+            alert={selectedAlert}
+            onBackToQueue={() => setActiveTab('alerts')}
+          />
         )}
 
-        {activeTab === 'graph' && (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[var(--surface-sunk)]">
-            <h2 className="text-[16px] font-semibold text-[var(--ink)] mb-2">
-              Screen 3: Link Analysis Graph
-            </h2>
-            <p className="text-[13px] text-[var(--ink-muted)] max-w-[500px] mb-4">
-              Cytoscape.js canvas with shape semantics (account=circle, device=square, beneficiary=diamond, phone=hexagon) and "Follow the Money" hop tracer.
-            </p>
-            <button
-              onClick={() => setActiveTab('alerts')}
-              className="text-[12px] font-medium text-[var(--accent)] underline underline-offset-2"
-            >
-              Back to Alert Queue
-            </button>
-          </div>
-        )}
+        {activeTab === 'graph' && <LinkAnalysisGraphScreen />}
 
-        {activeTab === 'str_draft' && (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[var(--surface)]">
-            <h2 className="text-[16px] font-semibold text-[var(--ink)] mb-2">
-              Screen 4: Evidence & STR Draft
-            </h2>
-            <p className="text-[13px] text-[var(--ink-muted)] max-w-[500px] mb-4">
-              Two-column workspace with source evidence list and rich document composer with inline citation chips for FIU-IND submission.
-            </p>
-            <button
-              onClick={() => setActiveTab('alerts')}
-              className="text-[12px] font-medium text-[var(--accent)] underline underline-offset-2"
-            >
-              Back to Alert Queue
-            </button>
-          </div>
-        )}
+        {activeTab === 'str_draft' && <EvidenceAndStrDraftScreen />}
       </div>
     </div>
   );

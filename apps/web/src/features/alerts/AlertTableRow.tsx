@@ -32,7 +32,7 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
       if (rowRef.current) {
         onPeekHover(alert, rowRef.current.getBoundingClientRect());
       }
-    }, 400); // 400ms peek threshold
+    }, 400);
   };
 
   const handleMouseLeave = () => {
@@ -42,14 +42,12 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
     onPeekLeave();
   };
 
-  // Format currency in INR tabular format: ₹4,82,000
   const formattedINR = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
     maximumFractionDigits: 0,
   }).format(alert.amountAtRiskINR);
 
-  // Time format: HH:mm IST
   const timeFormatted = new Date(alert.timestamp).toLocaleTimeString('en-IN', {
     hour: '2-digit',
     minute: '2-digit',
@@ -71,7 +69,7 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
       )}
     >
       {/* Checkbox */}
-      <div className="w-8 shrink-0 flex items-center" onClick={e => e.stopPropagation()}>
+      <div className="w-[36px] shrink-0 flex items-center" onClick={e => e.stopPropagation()}>
         <input
           type="checkbox"
           checked={isSelected}
@@ -81,13 +79,13 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
         />
       </div>
 
-      {/* Risk Score (Inline 40px bar, right-aligned) */}
-      <div className="w-24 shrink-0 pr-3">
+      {/* Risk Score */}
+      <div className="w-[84px] shrink-0 pr-3">
         <InlineRiskBar score={alert.riskScore} />
       </div>
 
       {/* Account / Masked PII */}
-      <div className="w-44 shrink-0 flex items-center gap-1.5 font-mono text-[12px] text-[var(--ink)]">
+      <div className="w-[150px] shrink-0 flex items-center gap-1 font-mono text-[12px] text-[var(--ink)]">
         {alert.isRestricted ? (
           <span className="flex items-center gap-1 text-[var(--ink-faint)] italic text-[11px]">
             <Lock className="w-3 h-3 text-[var(--warn)]" strokeWidth={1.5} />
@@ -120,7 +118,7 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
       </div>
 
       {/* Bank & Type */}
-      <div className="w-36 shrink-0 truncate text-[var(--ink-muted)] text-[11px]">
+      <div className="w-[140px] shrink-0 truncate text-[var(--ink-muted)] text-[11px]">
         {alert.bankName}
         {alert.ringId && (
           <span className="ml-1 px-1 py-0.2 bg-[var(--accent-soft)] text-[var(--accent)] rounded-[2px] font-mono text-[10px]">
@@ -129,28 +127,28 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
         )}
       </div>
 
-      {/* Pass-through ratio (numeric, right-aligned) */}
-      <div className="w-24 shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
+      {/* Pass-through ratio */}
+      <div className="w-[80px] shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
         {alert.passThroughRatio.toFixed(2)}
       </div>
 
-      {/* Graph Degree (numeric, right-aligned) */}
-      <div className="w-20 shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
+      {/* Graph Degree */}
+      <div className="w-[64px] shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
         {alert.graphDegree}
       </div>
 
-      {/* Account Age (numeric, right-aligned) */}
-      <div className="w-20 shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
+      {/* Account Age */}
+      <div className="w-[54px] shrink-0 text-right pr-3 font-mono tabular-nums text-[var(--ink)]">
         {alert.accountAgeDays}d
       </div>
 
-      {/* Amount at Risk (numeric, right-aligned) */}
-      <div className="w-32 shrink-0 text-right pr-3 font-mono tabular-nums font-medium text-[var(--ink)]">
+      {/* Amount at Risk */}
+      <div className="w-[110px] shrink-0 text-right pr-3 font-mono tabular-nums font-medium text-[var(--ink)]">
         {formattedINR}
       </div>
 
       {/* Status Pill */}
-      <div className="w-24 shrink-0">
+      <div className="w-[80px] shrink-0">
         <Badge
           variant={
             alert.status === 'INVESTIGATING'
@@ -166,8 +164,8 @@ export const AlertTableRow: React.FC<AlertTableRowProps> = ({
         </Badge>
       </div>
 
-      {/* Time (IST) */}
-      <div className="w-24 shrink-0 text-right font-mono text-[11px] tabular-nums text-[var(--ink-muted)]">
+      {/* Time */}
+      <div className="w-[84px] shrink-0 text-right font-mono text-[11px] tabular-nums text-[var(--ink-muted)]">
         {timeFormatted}
       </div>
     </div>

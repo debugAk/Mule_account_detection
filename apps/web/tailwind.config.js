@@ -7,18 +7,6 @@ export default {
   ],
   darkMode: ['class', '[data-theme="night"]'],
   theme: {
-    spacing: {
-      0: '0px',
-      0.5: '2px',
-      1: '4px',
-      1.5: '6px',
-      2: '8px',
-      3: '12px',
-      4: '16px',
-      6: '24px',
-      8: '32px',
-      12: '48px',
-    },
     fontSize: {
       '2xs': ['11px', { lineHeight: '1.45' }],
       'xs': ['12px', { lineHeight: '1.45' }],
@@ -61,6 +49,17 @@ export default {
       mono: ['"JetBrains Mono"', 'monospace'],
     },
     extend: {
+      spacing: {
+        0.5: '2px',
+        1: '4px',
+        1.5: '6px',
+        2: '8px',
+        3: '12px',
+        4: '16px',
+        6: '24px',
+        8: '32px',
+        12: '48px',
+      },
       transitionDuration: {
         fast: '120ms',
         press: '90ms',
