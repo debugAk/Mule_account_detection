@@ -1,24 +1,29 @@
 import React, { useEffect, useRef } from 'react';
 import cytoscape, { Core } from 'cytoscape';
 import { SEED_GRAPH_ELEMENTS, GraphNodeData } from './graphData';
+import { NetworkGraphResponse } from '@mule-platform/shared-types';
 
 interface CytoscapeCanvasProps {
   activeHopEdgeId: string | null;
   onSelectNode: (node: GraphNodeData | null) => void;
+  graphData?: NetworkGraphResponse;
 }
 
-export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeId, onSelectNode }) => {
+export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeId, onSelectNode, graphData }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const nodes = graphData?.nodes?.length ? graphData.nodes : SEED_GRAPH_ELEMENTS.nodes;
+    const edges = graphData?.edges?.length ? graphData.edges : SEED_GRAPH_ELEMENTS.edges;
+
     const cy = cytoscape({
       container: containerRef.current,
       elements: [
-        ...SEED_GRAPH_ELEMENTS.nodes.map(n => ({ data: n.data })),
-        ...SEED_GRAPH_ELEMENTS.edges.filter(e => e.data && e.data.source).map(e => ({ data: e.data })),
+        ...nodes.map(n => ({ data: n.data })),
+        ...edges.filter(e => e.data && e.data.source).map(e => ({ data: e.data })),
       ],
       style: [
         {
@@ -136,7 +141,7 @@ export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeI
     return () => {
       cy.destroy();
     };
-  }, [onSelectNode]);
+  }, [onSelectNode, graphData]);
 
   // Update active hop edge highlight
   useEffect(() => {

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../lib/api';
 import { CytoscapeCanvas } from './CytoscapeCanvas';
 import { GraphFollowTheMoneyControl } from './GraphFollowTheMoneyControl';
 import { GraphTableViewFallback } from './GraphTableViewFallback';
 import { MONEY_PATH_HOPS, GraphNodeData } from './graphData';
 import { Button } from '@mule-platform/ui-kit';
-import { Table, Network, Circle, Square, Diamond, Hexagon, X } from 'lucide-react';
+import { Table, Network, Circle, Square, Diamond, Hexagon, X, RefreshCw } from 'lucide-react';
 
 export const LinkAnalysisGraphScreen: React.FC = () => {
   const [viewMode, setViewMode] = useState<'canvas' | 'table'>('canvas');
@@ -12,7 +14,13 @@ export const LinkAnalysisGraphScreen: React.FC = () => {
   const [currentHopIndex, setCurrentHopIndex] = useState(0);
   const [selectedNode, setSelectedNode] = useState<GraphNodeData | null>(null);
 
-  const activeHopEdgeId = isTracing ? MONEY_PATH_HOPS[currentHopIndex] : null;
+  const { data: graphData, isLoading } = useQuery({
+    queryKey: ['network-graph'],
+    queryFn: () => api.getNetworkGraph(),
+  });
+
+  const hops = graphData?.money_path_hops?.length ? graphData.money_path_hops : MONEY_PATH_HOPS;
+  const activeHopEdgeId = isTracing ? hops[currentHopIndex] : null;
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[var(--surface-sunk)] relative select-none">
@@ -64,6 +72,7 @@ export const LinkAnalysisGraphScreen: React.FC = () => {
             <CytoscapeCanvas
               activeHopEdgeId={activeHopEdgeId}
               onSelectNode={setSelectedNode}
+              graphData={graphData}
             />
           </>
         ) : (

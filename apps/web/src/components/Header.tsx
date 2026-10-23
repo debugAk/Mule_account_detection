@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
-import { Sun, Moon, ShieldAlert, Wifi, RefreshCw } from 'lucide-react';
+import { Sun, Moon, ShieldAlert, Wifi, RefreshCw, UploadCloud } from 'lucide-react';
 
 interface HeaderProps {
   lastSynced?: string;
   isReconnecting?: boolean;
   onRefresh?: () => void;
+  onOpenUpload?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   lastSynced,
   isReconnecting = false,
   onRefresh,
+  onOpenUpload,
 }) => {
   const { theme, toggleTheme } = useTheme();
   const [secondsAgo, setSecondsAgo] = useState(12);
@@ -134,6 +136,17 @@ export const Header: React.FC<HeaderProps> = ({
             <Sun className="w-4 h-4" strokeWidth={1.5} />
           )}
         </button>
+
+        {onOpenUpload && (
+          <button
+            onClick={onOpenUpload}
+            className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-mono text-[var(--accent)] hover:bg-[var(--accent-soft)] rounded-[4px] border border-[var(--border)] transition-colors"
+            title="Import transaction or SOA CSV"
+          >
+            <UploadCloud className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <span>Ingest</span>
+          </button>
+        )}
       </div>
     </header>
   );

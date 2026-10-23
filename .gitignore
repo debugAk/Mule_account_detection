@@ -5,3 +5,18 @@ dist
 .DS_Store
 .env.local
 .env.*.local
+*.tsbuildinfo
+
+# Python & tests
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# Local databases
+data/*.db
+data/*.sqlite
+data/*.sqlite3

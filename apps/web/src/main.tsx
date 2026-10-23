@@ -4,7 +4,8 @@ import App from './App';
 import './styles/index.css';
 
 async function prepareApp() {
-  if (import.meta.env.DEV) {
+  // Only start MSW if explicitly enabled via environment variable
+  if (import.meta.env.VITE_USE_MOCKS === 'true') {
     const { worker } = await import('./mocks/browser');
     await worker.start({
       onUnhandledRequest: 'bypass',
@@ -12,6 +13,7 @@ async function prepareApp() {
         url: '/mockServiceWorker.js',
       },
     });
+    console.info('[MuleSentinel] Mock Service Worker enabled by VITE_USE_MOCKS=true');
   }
 }
 

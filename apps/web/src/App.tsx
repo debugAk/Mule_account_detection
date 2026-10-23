@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './hooks/useTheme';
 import { Header } from './components/Header';
+import { CsvUploadModal } from './components/CsvUploadModal';
+import { DashboardScreen } from './features/dashboard/DashboardScreen';
 import { AlertQueueScreen } from './features/alerts/AlertQueueScreen';
 import { CaseDetailScreen } from './features/cases/CaseDetailScreen';
 import { LinkAnalysisGraphScreen } from './features/graph/LinkAnalysisGraphScreen';
 import { EvidenceAndStrDraftScreen } from './features/str/EvidenceAndStrDraftScreen';
 import { Alert } from '@mule-platform/shared-types';
-import { Layers, FileSpreadsheet, Share2, FileCheck } from 'lucide-react';
+import { LayoutDashboard, Layers, FileSpreadsheet, Share2, FileCheck } from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,15 +20,44 @@ const queryClient = new QueryClient({
   },
 });
 
-type AppTab = 'alerts' | 'case_detail' | 'graph' | 'str_draft';
+type AppTab = 'dashboard' | 'alerts' | 'case_detail' | 'graph' | 'str_draft';
 
 export const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<AppTab>('alerts');
+  const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
   const [lastSyncedTime, setLastSyncedTime] = useState<string>(new Date().toISOString());
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   const handleSelectAlert = (alert: Alert) => {
     setSelectedAlert(alert);
+    setActiveTab('case_detail');
+  };
+
+  const handleOpenCaseFromDashboard = (caseId: string, alertId?: string) => {
+    if (alertId) {
+      setSelectedAlert({
+        id: alertId,
+        accountId: caseId,
+        accountHolderMasked: 'Masked Entity',
+        bankName: 'HDFC Bank',
+        ifsc: 'HDFC0001042',
+        upiHandleMasked: 'target@okhdfcbank',
+        riskScore: 88,
+        riskTier: 'CRITICAL',
+        passThroughRatio: 0.98,
+        graphDegree: 14,
+        accountAgeDays: 18,
+        amountAtRiskINR: 15400000,
+        timestamp: new Date().toISOString(),
+        status: 'INVESTIGATING',
+        queueCategory: 'HIGH_RISK',
+        signals: [
+          'High Velocity Pass-Through (>95% routed within 15 mins)',
+          'Sudden spike in high-turnover UPI credit tranches',
+          'Shared hardware fingerprint with flagged syndicate cluster',
+        ],
+      } as unknown as Alert);
+    }
     setActiveTab('case_detail');
   };
 
@@ -35,7 +66,8 @@ export const AppContent: React.FC = () => {
       {/* Top chrome header */}
       <Header
         lastSynced={lastSyncedTime}
-        onRefresh={() => queryClient.invalidateQueries({ queryKey: ['alerts'] })}
+        onRefresh={() => queryClient.invalidateQueries()}
+        onOpenUpload={() => setIsUploadOpen(true)}
       />
 
       {/* Navigation sub-bar */}
@@ -44,6 +76,18 @@ export const AppContent: React.FC = () => {
         className="h-8 px-3 bg-[var(--surface-sunk)] border-b border-[var(--border)] flex items-center justify-between text-[12px] font-medium shrink-0 select-none"
       >
         <div className="flex items-center gap-1">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] transition-colors ${
+              activeTab === 'dashboard'
+                ? 'bg-[var(--surface)] text-[var(--ink)] font-semibold shadow-2xs border border-[var(--border)]'
+                : 'text-[var(--ink-muted)] hover:text-[var(--ink)]'
+            }`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5 text-[var(--accent)]" strokeWidth={1.5} />
+            <span>Dashboard</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('alerts')}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] transition-colors ${
@@ -107,6 +151,13 @@ export const AppContent: React.FC = () => {
 
       {/* Main Screen Content */}
       <div className="flex-1 flex overflow-hidden">
+        {activeTab === 'dashboard' && (
+          <DashboardScreen
+            onOpenCase={handleOpenCaseFromDashboard}
+            onOpenUpload={() => setIsUploadOpen(true)}
+          />
+        )}
+
         {activeTab === 'alerts' && (
           <AlertQueueScreen
             onSelectAlertForDetail={handleSelectAlert}
@@ -125,6 +176,12 @@ export const AppContent: React.FC = () => {
 
         {activeTab === 'str_draft' && <EvidenceAndStrDraftScreen />}
       </div>
+
+      {/* CSV Ingestion Modal */}
+      <CsvUploadModal
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+      />
     </div>
   );
 };
