@@ -1,18 +1,32 @@
 import React, { useEffect, useRef } from 'react';
 import cytoscape, { Core } from 'cytoscape';
+import { useTheme } from '../../hooks/useTheme';
 import { SEED_GRAPH_ELEMENTS, GraphNodeData } from './graphData';
 import { NetworkGraphResponse } from '@mule-platform/shared-types';
+import { getCytoscapeStyles, getLayoutConfig } from './graphTheme';
 
 interface CytoscapeCanvasProps {
   activeHopEdgeId: string | null;
   onSelectNode: (node: GraphNodeData | null) => void;
   graphData?: NetworkGraphResponse;
+  layoutMode?: 'cose' | 'concentric' | 'breadthfirst';
+  showAllLabels?: boolean;
+  onCyReady?: (cy: Core) => void;
 }
 
-export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeId, onSelectNode, graphData }) => {
+export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({
+  activeHopEdgeId,
+  onSelectNode,
+  graphData,
+  layoutMode = 'cose',
+  showAllLabels = false,
+  onCyReady,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
+  const { theme } = useTheme();
 
+  // Initialize Cytoscape once on mount or when data changes
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -25,91 +39,11 @@ export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeI
         ...nodes.map(n => ({ data: n.data })),
         ...edges.filter(e => e.data && e.data.source).map(e => ({ data: e.data })),
       ],
-      style: [
-        {
-          selector: 'node',
-          style: {
-            label: 'data(label)',
-            'font-family': 'Inter, system-ui, sans-serif',
-            'font-size': '11px',
-            'font-weight': 600,
-            color: 'var(--ink)',
-            'text-valign': 'bottom',
-            'text-margin-y': 6,
-            'background-color': 'var(--surface)',
-            'border-width': 2,
-            'border-color': 'var(--accent)',
-            width: 32,
-            height: 32,
-            'transition-property': 'opacity, border-color, border-width',
-            'transition-duration': 0.16,
-          },
-        },
-        {
-          selector: 'node[type="account"]',
-          style: { shape: 'ellipse', 'border-color': 'var(--accent)', 'background-color': 'var(--surface)' },
-        },
-        {
-          selector: 'node[type="device"]',
-          style: { shape: 'round-rectangle', 'border-color': 'var(--secondary)', 'background-color': 'var(--surface)' },
-        },
-        {
-          selector: 'node[type="beneficiary"]',
-          style: { shape: 'diamond', 'border-color': 'var(--danger)', 'background-color': 'var(--surface)', width: 36, height: 36 },
-        },
-        {
-          selector: 'node[type="phone"]',
-          style: { shape: 'hexagon', 'border-color': 'var(--warn)', 'background-color': 'var(--surface)' },
-        },
-        {
-          selector: 'edge',
-          style: {
-            width: 2,
-            'line-color': 'var(--border)',
-            'target-arrow-color': 'var(--border)',
-            'target-arrow-shape': 'triangle',
-            'curve-style': 'bezier',
-            label: 'data(label)',
-            'font-size': '9px',
-            'font-family': 'JetBrains Mono, monospace',
-            color: 'var(--ink-muted)',
-            'text-background-opacity': 1,
-            'text-background-color': 'var(--surface)',
-            'text-background-padding': '2px',
-            'transition-property': 'line-color, width, opacity',
-            'transition-duration': 0.2,
-          },
-        },
-        {
-          selector: 'edge:hover',
-          style: {
-            'line-style': 'dashed',
-            'line-dash-pattern': [6, 3],
-            'line-color': 'var(--accent)',
-            'target-arrow-color': 'var(--accent)',
-            width: 3,
-          },
-        },
-        {
-          selector: '.highlighted-hop',
-          style: {
-            'line-color': 'var(--danger)',
-            'target-arrow-color': 'var(--danger)',
-            width: 4,
-            'line-style': 'solid',
-            'z-index': 99,
-          },
-        },
-        {
-          selector: '.faded',
-          style: { opacity: 0.25 },
-        },
-      ],
-      layout: {
-        name: 'cose',
-        animate: false,
-        nodeDimensionsIncludeLabels: true,
-      },
+      style: getCytoscapeStyles(theme, showAllLabels),
+      layout: getLayoutConfig(layoutMode),
+      boxSelectionEnabled: false,
+      minZoom: 0.2,
+      maxZoom: 3.5,
     });
 
     cy.on('tap', 'node', e => {
@@ -120,7 +54,6 @@ export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeI
       if (e.target === cy) onSelectNode(null);
     });
 
-    // Hover neighbor highlighting
     cy.on('mouseover', 'node', e => {
       const node = e.target;
       const neighborhood = node.neighborhood().add(node);
@@ -137,11 +70,25 @@ export const CytoscapeCanvas: React.FC<CytoscapeCanvasProps> = ({ activeHopEdgeI
     });
 
     cyRef.current = cy;
+    if (onCyReady) onCyReady(cy);
 
     return () => {
       cy.destroy();
     };
-  }, [onSelectNode, graphData]);
+  }, [graphData, onSelectNode]);
+
+  // Update styles when theme or label visibility changes
+  useEffect(() => {
+    if (!cyRef.current) return;
+    cyRef.current.style(getCytoscapeStyles(theme, showAllLabels));
+  }, [theme, showAllLabels]);
+
+  // Re-run layout when layoutMode changes
+  useEffect(() => {
+    if (!cyRef.current) return;
+    const layout = cyRef.current.layout(getLayoutConfig(layoutMode));
+    layout.run();
+  }, [layoutMode]);
 
   // Update active hop edge highlight
   useEffect(() => {
