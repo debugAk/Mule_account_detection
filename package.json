@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "powershell -ExecutionPolicy Bypass -File ./start-platform.ps1",
     "dev": "pnpm --filter web dev",
+    "dev:backend": "python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload",
+    "train": "python ml/train_mule_detector.py --data-dir \"C:\\Users\\ankes\\Downloads\\SOA\"",
     "build": "pnpm --filter web build",
-    "lint": "pnpm --filter web lint"
+    "test": "python -m pytest -o pythonpath=. backend/tests/test_backend.py -v"
   },
   "devDependencies": {
     "typescript": "^5.4.5"
